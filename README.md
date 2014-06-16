@@ -51,16 +51,17 @@ end
 ```
 
 The pipes (|) are important, so make sure not to remove any.
-If your task doesn't need to be run in the folder of your application (like the existing job_type "command" of Whenever),
+If your job_type doesn't need to be run in the folder of your application (like the existing job_type "command" of Whenever),
 then remove the :path (leaving the pipes around it intact).
 
 As of right now the only type of schedule that is supported are the daily ones (run once per day, at a specific time, every day).
-Pull requests welcomed to add more, cron_entry.rb should be the only file needing edit for that.
+Pull requests welcomed to add more, cron_time.rb and test_cron_time.rb should be the only files needing edit for that.
 
 ## Contributing
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+3. Run test (`bundle install` followed by `rake`).
+4. Commit your changes (`git commit -am 'Add some feature'`)
+5. Push to the branch (`git push origin my-new-feature`)
+6. Create new Pull Request
