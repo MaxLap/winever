@@ -15,6 +15,7 @@ end
 module Winever
   autoload :CommandLine, 'winever/command_line'
   autoload :CronEntry, 'winever/cron_entry'
+  autoload :CronTime, 'winever/cron_time'
   autoload :TaskManager, 'winever/task_manager'
   autoload :WheneverInterface, 'winever/whenever_interface'
 end
