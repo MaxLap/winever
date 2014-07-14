@@ -79,9 +79,11 @@ module Winever
     def clear_tasks_except keep_tasks=[]
       ts = Win32::TaskScheduler.new
       task_names = ts.tasks.select{|tn| tn.end_with?('.' + identifier)}
+      task_names.concat(Winever::WheneverInterface::existing_tasks_to_remove)
+
       task_names = task_names.reject{|tn| keep_tasks.include?(tn)}
 
-      task_names.each{|tn| ts.delete(tn)}
+      task_names.each{|tn| ts.delete(tn) if ts.exists?(tn)}
     end
 
     def create_task cron_entry

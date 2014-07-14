@@ -4,6 +4,15 @@ module Winever
       @run_from_winever || false
     end
 
+    def self.remove_existing_tasks *names
+      @existing_tasks_to_remove ||= []
+      @existing_tasks_to_remove.concat(names.flatten)
+    end
+
+    def self.existing_tasks_to_remove
+      @existing_tasks_to_remove ||= []
+    end
+
     def self.raw_cron options={}
       # The output of whenever with the custom job_types and job_template.
       options[:file]       ||= 'config/schedule.rb'
@@ -36,6 +45,7 @@ module Winever
     end
 
     def self.cron options={}
+      # Content of a printable cron in internal Winever format. Also displays entry that are not handled and why.
       entries = all_cron_entries(options)
       valid_entries = entries.select(&:valid?)
       invalid_entries = entries.reject(&:valid?)
@@ -54,6 +64,13 @@ module Winever
         invalid_entries.each do |invalid_entry|
           output << "# #{invalid_entry.invalid_reason}\n"
           output << "#{invalid_entry.cron_line}\n\n"
+        end
+      end
+
+      if existing_tasks_to_remove.present?
+        output << "\n# Additionnal task names that will be removed if they exist:\n"
+        existing_tasks_to_remove.each do |path|
+          output << "# - #{path}\n"
         end
       end
       output
