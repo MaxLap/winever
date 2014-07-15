@@ -68,10 +68,16 @@ module Winever
       end
 
       if existing_tasks_to_remove.present?
-        output << "\n# Additionnal task names that will be removed if they exist:\n"
-        existing_tasks_to_remove.each do |path|
-          output << "# - #{path}\n"
+        if existing_tasks_to_remove.size <= 15
+          output << "\n# Additionnal task names that will be removed if they exist:\n"
+          existing_tasks_to_remove.each do |path|
+            output << "# - #{path}\n"
+          end
+        else
+          output << "\n# Additionnal task names that will be removed if they exist:\n"
+          output << "#  (More than #{15} task names, not displaying.)\n"
         end
+        output << "\n"
       end
       output
     end
