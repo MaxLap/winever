@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Winever::VERSION
   spec.authors       = ["Maxime Handfield Lapointe"]
   spec.email         = ["hunter_spawn@hotmail.com"]
-  spec.description   = %q{Make it possible to use the Whenever gem's clean ruby syntax for writing and deploying tasks in the windows scheduler, using the same schedule file.}
-  spec.summary       = %q{Make it possible to use the Whenever gem on Windows.}
+  spec.description   = %q{Clean ruby syntax for writing and deploying tasks in Windows' task scheduler. Extension of gem whenever.}
+  spec.summary       = %q{Add tasks in Windows' task scheduler from a ruby configuration file.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
