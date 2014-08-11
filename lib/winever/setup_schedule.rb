@@ -8,6 +8,6 @@ if winever?
 
   job_type :command, ":task_folder|:task_name||:task :output"
   job_type :rake,    ":task_folder|:task_name|:path|:bundle_command rake :task --silent :environment_variable=:environment :output"
-  job_type :script,  ":task_folder|:task_name|:path|:bundle_command script/:task :environment_variable=:environment :output"
-  job_type :runner,  ":task_folder|:task_name|:path|:runner_command -e :environment ':task' :output"
+  job_type :script,  ":task_folder|:task_name|:path|:bundle_command ruby script/:task :environment_variable=:environment :output"
+  job_type :runner,  ":task_folder|:task_name|:path|ruby :runner_command -e :environment ':task' :output"
 end
