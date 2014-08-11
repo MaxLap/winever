@@ -57,6 +57,13 @@ then remove the :path (leaving the pipes around it intact).
 As of right now the only type of schedule that is supported are the daily ones (run once per day, at a specific time, every day).
 Pull requests welcomed to add more, cron_time.rb and test_cron_time.rb should be the only files needing edit for that.
 
+## Limitations/warnings
+
+* As mentioned previously, only once-per-day-everyday tasks are supported.
+* Since RVM doesn't support windows, the tasks will call the global executables. Meaning if you have multiple Ruby installed, the first executable found on the PATH will be used.
+* Windows may not deal with single and double quotes in the same way as Linux. This is especially apparent when using `bundle exec` before the actual command, which happens automatically for rake and script tasks. Whenever possible, use the single quote. If you don't, make sure to test on both environment that the behavior is as expected.
+
+
 ## Contributing
 
 1. Fork it
