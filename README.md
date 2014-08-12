@@ -61,7 +61,34 @@ Pull requests welcomed to add more, cron_time.rb and test_cron_time.rb should be
 
 * As mentioned previously, only once-per-day-everyday tasks are supported.
 * Since RVM doesn't support windows, the tasks will call the global executables. Meaning if you have multiple Ruby installed, the first executable found on the PATH will be used.
-* Windows may not deal with single and double quotes in the same way as Linux. This is especially apparent when using `bundle exec` before the actual command, which happens automatically for rake and script tasks. Whenever possible, use the single quote. If you don't, make sure to test on both environment that the behavior is as expected.
+* Windows may not deal with single and double quotes in the same way as Linux. This is especially apparent when using `bundle exec` before the actual command, which happens automatically for rake and script job_types. Make sure to test on both environment that the behavior is as expected. Also, see the section Ruby-Windows bug.
+* See the section Ruby-Windows bug.
+
+## Ruby-Windows bug
+There is currently a bug in Ruby ([#10128](https://bugs.ruby-lang.org/issues/10128)) related to argument passing through functions such as Kernel.exec, Kernel.system, which makes arguments be split around metacharacters by Windows when they shouldn't. This can be a problem when using bundle exec, which happens for the `rake` and `script` job_types. 
+
+As an example, in your console on Windows, the following will all fail because `bundle exec` relies on Kernel.exec. It will try to call the command world]: 
+```
+    bundle exec rake my_task[hello&world]
+    bundle exec rake my_task["hello&world"]
+    bundle exec rake "my_task[hello&world]"
+```
+
+The problematic metacharacters are the following: 
+
+* <>&|;
+* the ^ gets removed
+* the " is not escaped correctly, most likely breaking things. (no workaround)
+
+The workaround is to have a space somewhere in the argument that contains those characters, Ruby will then wrap those parameters in quote and things will got correctly. For rake tasks, this can usually be handled easily by adding an empty parameter, which won't even be considered by rake. (no need to change your task). The above would work as `bundle exec rake "my_task[hello&world, ]"`.
+
+In your schedule, your line for the rake task should therefore include the double quotes: 
+
+```
+rake '"my_task[hello&world, ]"'
+```
+
+
 
 
 ## Contributing
