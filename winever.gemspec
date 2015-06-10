@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "whenever", ">= 0.9.1"
   spec.add_dependency "highline", ">= 0.5.0"
+  spec.add_dependency "win32-taskscheduler", ">= 0.3.1"
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
