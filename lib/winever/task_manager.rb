@@ -32,7 +32,7 @@ module Winever
     end
 
     def password
-      return @password.presence if @password
+      return @password.empty? ? nil : @password if @password
       require 'highline/import'
       prompt = <<-PRMP.gsub(/^ +/, '')
         To setup tasks correctly, the password of the current user account is needed.
@@ -58,7 +58,7 @@ module Winever
       # validate_password(password)
 
       @password = pw
-      pw.presence
+      pw.empty? ? nil : pw
     end
 
     def create_tasks
