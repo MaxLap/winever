@@ -52,14 +52,14 @@ module Winever
 
 
       output = "# Valid tasks for Winever in internal format:\n"
-      if valid_entries.present?
+      if !valid_entries.empty?
         output << valid_entries.map(&:cron_line).join("\n\n")
       else
         output << "No valid entries"
       end
       output << "\n\n"
 
-      if invalid_entries.present?
+      if !invalid_entries.empty?
         output << "\n# Invalid entries for Winever in internal format:\n"
         invalid_entries.each do |invalid_entry|
           output << "# #{invalid_entry.invalid_reason}\n"
@@ -67,7 +67,7 @@ module Winever
         end
       end
 
-      if existing_tasks_to_remove.present?
+      if !existing_tasks_to_remove.empty?
         if existing_tasks_to_remove.size <= 15
           output << "\n# Additionnal task names that will be removed if they exist:\n"
           existing_tasks_to_remove.each do |path|

@@ -43,7 +43,7 @@ module Winever
       PRMP
 
       pw = ask(prompt){|q| q.echo = false}
-      while pw.present? && !validate_password(pw)
+      while pw && !pw.empty? && !validate_password(pw)
         prompt = <<-PRMP.gsub(/^ +/, '')
           Invalid password entered.
           Enter the password of the current user (or just press enter to skip):

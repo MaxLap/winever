@@ -35,7 +35,7 @@ module Winever
     end
 
     def unsupported_reason
-      return "Need 5 parts delimited by spaces" if parts.select(&:present?).length != 5
+      return "Need 5 parts delimited by spaces" if parts.compact.reject(&:empty?).length != 5
       return "Only '*' is supported for day, month and day or week parts" if [day, month, dow].detect{|v| v != '*'}
       return "Only single number is supported for minute and hour parts" if [minute, hour].detect{|v| (v =~ /^\d+$/).nil? }
       nil

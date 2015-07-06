@@ -3,7 +3,7 @@ module Winever
     attr_accessor :cron_time, :task_folder, :task_name, :working_directory, :parameters, :cron_line
 
     def self.from_cron_output cron_output, include_invalid=false
-      entries = cron_output.split("\n").select(&:present?).map{|o| new(o)}
+      entries = cron_output.split("\n").reject(&:empty?).map{|o| new(o)}
       entries = entries.select(&:valid?) unless include_invalid
       entries
     end
@@ -25,7 +25,7 @@ module Winever
 
     def invalid_reason
       return "Doesn't match the Winever format" unless @cron_parts.length == 5
-      return "Doesn't have a task_name specified" unless @task_name.present?
+      return "Doesn't have a task_name specified" if @task_name.nil? || @task_name.empty?
       return "Problem with schedule: #{@cron_time.unsupported_reason}" unless @cron_time.supported?
       nil
     end
