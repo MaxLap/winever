@@ -32,21 +32,21 @@ module Winever
     end
 
     def password
+      return @options[:password] if @options.has_key?(:password)
+      return ENV['WINEVER_PASSWORD'] if ENV['WINEVER_PASSWORD'] && !ENV['WINEVER_PASSWORD'].empty?
+
       return @password.empty? ? nil : @password if @password
       require 'highline/import'
       prompt = <<-PRMP.gsub(/^ +/, '')
-        To setup tasks correctly, the password of the current user account is needed.
-        You can leave it empty, but without the password, the task will only be run the user is logged on and will open a black
-        console window while running.
-        You can manually go edit the scheduled task to add the password manually if you prefer not to give it to Winever, but you will need to go do that every time you edit the tasks through Winever, for each task.
-        Enter the password of the current user (or just press enter to skip):
+        To setup tasks, the password of the current user account is needed.
+        Enter the password of the current windows user (or leave blank to avoid doing the changes):
       PRMP
 
       pw = ask(prompt){|q| q.echo = false}
       while pw && !pw.empty? && !validate_password(pw)
         prompt = <<-PRMP.gsub(/^ +/, '')
           Invalid password entered.
-          Enter the password of the current user (or just press enter to skip):
+          Enter the password of the current windows user (or leave blank to avoid doing the changes):
         PRMP
         pw = ask(prompt){|q| q.echo = false}
       end
@@ -62,6 +62,8 @@ module Winever
     end
 
     def create_tasks
+      return if self.password.nil?
+
       cron_entries = Winever::WheneverInterface.valid_cron_entries(@options)
 
       created_task_names = []
@@ -72,8 +74,12 @@ module Winever
     end
 
     def update_tasks
+      return false if self.password.nil?
+
       task_names = create_tasks
       clear_tasks_except(task_names)
+
+      true
     end
 
     def clear_tasks_except keep_tasks=[]
@@ -87,6 +93,8 @@ module Winever
     end
 
     def create_task cron_entry
+      return if self.password.nil?
+
       task_name = generate_task_name(cron_entry.task_name)
 
       # Replacing the /dev/null by NUL
