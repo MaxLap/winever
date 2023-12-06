@@ -42,7 +42,7 @@ module Winever
       @options[:cut]        ||= 0
       @options[:identifier] ||= default_identifier
 
-      unless File.exists?(@options[:file])
+      unless File.exist?(@options[:file])
         warn("[fail] Can't find file: #{@options[:file]}")
         exit(1)
       end
